@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#05080c">
+<title>DM FITNESS · PRO V2</title>
+<style>
+:root{
+  --bg:#05080c;--panel:#0a1219;--panel2:#0d171f;--line:#22333e;--text:#f5f8fb;--muted:#879aa6;
+  --blue:#258cff;--red:#ff3441;--yellow:#ffd72a;--green:#4ff07a;--purple:#a94fff;
+}
+*{box-sizing:border-box} html,body{margin:0;background:radial-gradient(circle at 50% -20%,#14212a 0,#05080c 32%,#04070a 70%);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
+button,input,select,textarea{font:inherit} button{cursor:pointer}
+.app{max-width:780px;margin:auto;padding:8px 12px 100px}
+.status{height:28px;display:flex;align-items:center;justify-content:space-between;font-weight:800;font-size:12px}
+.top{position:sticky;top:0;z-index:50;background:linear-gradient(180deg,rgba(5,8,12,.98),rgba(5,8,12,.9),transparent);backdrop-filter:blur(14px);padding-bottom:8px}
+.bar{display:flex;align-items:center;justify-content:space-between}.barTitle{font-weight:900;letter-spacing:.3px}
+.iconBtn{width:42px;height:42px;border-radius:14px;border:1px solid var(--line);background:#0a141b;color:#fff;font-size:22px}
+.screen{display:none}.screen.active{display:block}
+.hero{text-align:center;padding:26px 8px 12px}.dmMark{display:inline-grid;grid-template-columns:auto auto;align-items:center;font-weight:1000;font-size:58px;letter-spacing:-7px}.dmMark .m{color:var(--purple)}
+.hero h1{font-size:31px;margin:2px 0 2px}.hero p{margin:0;color:#b8c4cb;font-weight:800;letter-spacing:2px;font-size:11px}
+.modules{display:grid;gap:10px;margin-top:16px}
+.module{display:flex;align-items:center;gap:13px;padding:14px;border-radius:17px;border:1px solid var(--line);background:linear-gradient(180deg,#0e1820,#091117);box-shadow:inset 0 1px rgba(255,255,255,.02)}
+.moduleIcon{width:52px;height:52px;border-radius:14px;display:grid;place-items:center;border:1px solid currentColor;background:#0d151b}
+.moduleIcon svg{width:34px;height:34px}.grow{flex:1}.module b{display:block;font-size:15px}.module small,.lead{color:var(--muted)}.chev{font-size:25px}
+.blue{color:var(--blue)}.red{color:var(--red)}.yellow{color:var(--yellow)}.green{color:var(--green)}.purple{color:var(--purple)}
+.section{padding-top:8px}.section h2{font-size:27px;margin:8px 0 3px}.section .lead{margin:0 0 14px}
+.card{border:1px solid var(--line);background:linear-gradient(180deg,#0d171f,#091117);border-radius:17px;padding:14px;margin-top:10px}
+.primary{width:100%;border:0;border-radius:15px;padding:14px 16px;font-weight:950;margin-top:12px}
+.blueBg{background:var(--blue);color:#fff}.redBg{background:var(--red);color:#fff}.yellowBg{background:var(--yellow);color:#091013}.greenBg{background:var(--green);color:#07120b}.purpleBg{background:var(--purple);color:#fff}
+.seg{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.seg button{padding:12px;border-radius:13px;border:1px solid var(--line);background:#0a141b;color:#fff}.seg button.active{background:var(--purple);border-color:var(--purple);font-weight:900}
+.weekpick{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-top:12px}.weekpick button{aspect-ratio:1;border-radius:12px;border:1px solid var(--line);background:#0b151c;color:#fff;font-weight:800}.weekpick button.on{background:var(--purple);border-color:var(--purple)}
+.planGrid{display:grid;gap:9px}.planRow{display:flex;gap:12px;align-items:center;padding:12px;border-radius:14px;border:1px solid var(--line);background:#0b151c}.dayBadge{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;background:#131f27;font-weight:900}
+.catalogToolbar{display:flex;gap:8px;overflow:auto;scrollbar-width:none;margin-bottom:10px}.chip{white-space:nowrap;border:1px solid var(--line);background:#0a141b;color:#fff;padding:8px 11px;border-radius:999px;font-size:12px}.chip.active{font-weight:900}
+.machineGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.machineCard{border:1px solid var(--line);background:linear-gradient(180deg,#0d171f,#081017);border-radius:17px;overflow:hidden}
+.machineVisual{height:145px;display:grid;place-items:center;background:radial-gradient(circle at 50% 35%,rgba(255,255,255,.06),transparent 55%),#081117}
+.machineVisual svg{width:92%;height:92%}.machineInfo{padding:12px}.machineInfo b{display:block}.machineInfo small{color:var(--muted)}
+.machineBtns{display:flex;gap:8px;margin-top:9px}.miniBtn{flex:1;border:1px solid var(--line);background:#101a21;color:#fff;padding:9px;border-radius:11px;font-size:12px}
+.detailVisual{min-height:275px;border:1px solid var(--line);background:radial-gradient(circle at 50% 35%,rgba(255,255,255,.06),transparent 55%),#081117;border-radius:18px;display:grid;place-items:center}.detailVisual svg{width:92%;height:260px}
+.detailGrid{display:grid;grid-template-columns:1.2fr .8fr;gap:10px}.muscle{border:1px solid var(--line);border-radius:18px;background:#081117;padding:10px;text-align:center}.muscle svg{width:100%;height:215px}
+.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:10px}.tab{border:1px solid var(--line);background:#0a141b;color:#fff;padding:10px;border-radius:12px}.tab.active{font-weight:900}
+.step{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid #18262f}.n{width:28px;height:28px;display:grid;place-items:center;border-radius:50%;flex:none;font-weight:900;color:#081117}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.stat{border:1px solid var(--line);background:#0b151c;border-radius:14px;padding:12px}.stat strong{display:block;font-size:24px}.stat small{color:var(--muted)}
+.input{width:100%;padding:12px;border-radius:12px;border:1px solid var(--line);background:#071017;color:white}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.calendar{border:1px solid var(--line);background:#0a1218;border-radius:17px;padding:12px}.calHead{display:flex;align-items:center;justify-content:space-between}.week,.days{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;text-align:center}.week div{font-size:11px;color:var(--muted);padding:8px 0}.day{aspect-ratio:1;border:0;border-radius:10px;background:#0d1921;color:white;position:relative}.day.today{outline:2px solid var(--purple)}.dot{position:absolute;width:6px;height:6px;border-radius:50%;bottom:4px;left:50%;transform:translateX(-50%)}
+.bottom{position:fixed;left:0;right:0;bottom:0;z-index:70;background:rgba(4,8,12,.97);backdrop-filter:blur(14px);border-top:1px solid var(--line);padding:7px 8px calc(7px + env(safe-area-inset-bottom))}
+.bottomIn{max-width:780px;margin:auto;display:grid;grid-template-columns:repeat(5,1fr)}.nav{border:0;background:transparent;color:#91a2ad;padding:5px 1px;font-size:10px}.nav b{display:block;font-size:19px}.nav.active{color:var(--purple)}
+.workout{position:fixed;inset:0;z-index:120;background:linear-gradient(180deg,#05080c,#071018);display:none;overflow:auto;padding:12px 14px 28px}.workout.show{display:block}.wHead{display:flex;justify-content:space-between;align-items:center}.wMachine{height:210px;margin-top:14px;border:1px solid var(--line);border-radius:18px;background:#081117;display:grid;place-items:center}.wMachine svg{height:190px;width:92%}.wTitle{text-align:center;font-size:27px;margin:12px 0 3px}.wMeta{text-align:center;color:var(--muted)}
+.wStats{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:14px}.wStat{border:1px solid var(--line);background:#0b151c;border-radius:15px;padding:13px;text-align:center}.wStat strong{display:block;font-size:34px}.ctrl{display:flex;justify-content:center;gap:9px;margin-top:8px}.round{width:34px;height:34px;border-radius:50%;border:1px solid #38505d;background:#10212a;color:white;font-size:19px}
+.timerRing{width:150px;height:150px;border-radius:50%;display:grid;place-items:center;margin:12px auto;background:conic-gradient(var(--purple) var(--p,100%),#1c2b34 0);position:relative}.timerRing:before{content:"";position:absolute;inset:10px;border-radius:50%;background:#071017}.timerRing strong{position:relative;font-size:37px}
+.toast{display:none;position:fixed;left:50%;transform:translateX(-50%);bottom:98px;z-index:150;background:#111d24;border:1px solid #32454f;border-radius:12px;padding:10px 14px}
+@media(max-width:560px){.machineGrid{grid-template-columns:1fr 1fr}.detailGrid{grid-template-columns:1fr}.muscle svg{height:165px}}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="top">
+    <div class="status"><span id="clock">9:41</span><span>▮▮▮ ︿ ▰</span></div>
+    <div class="bar"><button class="iconBtn" onclick="back()">‹</button><div class="barTitle" id="topTitle">DM FITNESS</div><button class="iconBtn" onclick="go('user')">👤</button></div>
+  </div>
+
+  <section id="home" class="screen active">
+    <div class="hero"><div class="dmMark"><span>D</span><span class="m">M</span></div><h1>DM FITNESS</h1><p>DISCIPLINA EN CADA ETAPA</p></div>
+    <div class="modules">
+      <div class="module blue" onclick="go('calisthenics')"><div class="moduleIcon" id="icoCali"></div><div class="grow"><b>DM Calistenia</b><small>Fuerza · Técnica · 15 minutos</small></div><span class="chev">›</span></div>
+      <div class="module red" onclick="go('life')"><div class="moduleIcon" id="icoLife"></div><div class="grow"><b>DM Gym Life Fitness</b><small>Máquinas · Pesos · Progresión</small></div><span class="chev">›</span></div>
+      <div class="module yellow" onclick="go('techno')"><div class="moduleIcon" id="icoTech"></div><div class="grow"><b>DM Gym Technogym</b><small>Precisión · Tecnología · Resultados</small></div><span class="chev">›</span></div>
+      <div class="module green" onclick="go('cardio')"><div class="moduleIcon" id="icoCardio"></div><div class="grow"><b>DM Gym Cardio</b><small>Resistencia · Salud · HIIT</small></div><span class="chev">›</span></div>
+      <div class="module purple" onclick="go('user')"><div class="moduleIcon" id="icoUser"></div><div class="grow"><b>DM Usuario</b><small>Progreso · Calendario · Logros</small></div><span class="chev">›</span></div>
+    </div>
+    <button class="primary purpleBg" onclick="go('planner')">Crear mi planificación semanal</button>
+  </section>
+
+  <section id="planner" class="screen">
+    <div class="section">
+      <h2>Plan de entrenamiento</h2><p class="lead">Elige cuántos días quieres entrenar y en qué días exactos.</p>
+      <div class="card"><b>¿Cuántos días por semana?</b><div class="seg" id="freqSeg" style="margin-top:12px"></div></div>
+      <div class="card"><b>Elige tus días</b><div class="weekpick" id="dayPick"></div></div>
+      <div class="card"><b>Distribución automática</b><p class="lead" id="splitText"></p><div class="planGrid" id="planPreview"></div></div>
+      <button class="primary purpleBg" onclick="savePlan()">Continuar</button>
+    </div>
+  </section>
+
+  <section id="life" class="screen"><div class="section"><h2 class="red">DM Gym Life Fitness</h2><p class="lead">Rutinas por objetivo · Máquinas · Programas · Progresión</p><div id="lifeCatalog"></div></div></section>
+  <section id="techno" class="screen"><div class="section"><h2 class="yellow">DM Gym Technogym</h2><p class="lead">Catálogo técnico · Pesos · Programas · Progresión</p><div id="techCatalog"></div></div></section>
+  <section id="detail" class="screen"><div class="section"><div id="detailContent"></div></div></section>
+
+  <section id="calisthenics" class="screen"><div class="section"><h2 class="blue">DM Calistenia</h2><p class="lead">Programa de 15 minutos · Sin material</p><div id="caliContent"></div></div></section>
+
+  <section id="cardio" class="screen"><div class="section"><h2 class="green">DM Gym Cardio</h2><p class="lead">Cinta · Bicicleta · Elíptica · HIIT</p><div id="cardioContent"></div></div></section>
+
+  <section id="calendar" class="screen"><div class="section"><h2>Calendario</h2><p class="lead">Entrenamientos planificados y completados.</p><div class="calendar"><div class="calHead"><button class="iconBtn" onclick="changeMonth(-1)">‹</button><b id="calTitle"></b><button class="iconBtn" onclick="changeMonth(1)">›</button></div><div class="week"><div>L</div><div>M</div><div>X</div><div>J</div><div>V</div><div>S</div><div>D</div></div><div class="days" id="calDays"></div></div><div id="dayInfo"></div></div></section>
+
+  <section id="train" class="screen"><div class="section"><h2>Entrenar</h2><p class="lead">Acceso rápido a tus modalidades.</p><div class="modules">
+    <div class="module blue" onclick="go('calisthenics')"><div class="moduleIcon" id="icoCali2"></div><div class="grow"><b>Calistenia</b><small>15 minutos</small></div>›</div>
+    <div class="module red" onclick="quickStrength('life')"><div class="moduleIcon" id="icoLife2"></div><div class="grow"><b>Life Fitness</b><small>Rutina con tus máquinas</small></div>›</div>
+    <div class="module yellow" onclick="quickStrength('techno')"><div class="moduleIcon" id="icoTech2"></div><div class="grow"><b>Technogym</b><small>Rutina con tus máquinas</small></div>›</div>
+    <div class="module green" onclick="startCardio('Cinta',20,'Moderado')"><div class="moduleIcon" id="icoCardio2"></div><div class="grow"><b>Cardio rápido</b><small>20 min moderado</small></div>›</div>
+  </div></div></section>
+
+  <section id="progress" class="screen"><div class="section"><h2>Progreso</h2><p class="lead">Estadísticas reales de tus sesiones.</p><div class="stats" id="progressStats"></div><div class="card"><b>Peso corporal</b><div class="grid2" style="margin-top:10px"><input id="weightInput" class="input" type="number" step=".1" placeholder="kg"><button class="primary purpleBg" style="margin:0" onclick="addWeight()">Guardar</button></div><div id="weightHistory"></div></div><div class="card"><b>Récords personales</b><div id="prs"></div></div></div></section>
+
+  <section id="user" class="screen"><div class="section"><h2 class="purple">DM Usuario</h2><p class="lead">Todos tus datos unidos.</p><div class="card"><input id="nameInput" class="input" placeholder="Tu nombre" onblur="saveProfile()"><div class="grid2" style="margin-top:8px"><input id="heightInput" class="input" type="number" step=".01" placeholder="Altura (m)" onblur="saveProfile()"><input id="goalWeightInput" class="input" type="number" step=".1" placeholder="Peso objetivo" onblur="saveProfile()"></div></div><div class="stats" id="userStats"></div><div class="card"><button class="primary purpleBg" onclick="go('planner')">Editar planificación</button><button class="primary" style="background:#131d25;color:#fff;border:1px solid var(--line)" onclick="exportData()">Exportar copia de seguridad</button></div></div></section>
+</div>
+
+<nav class="bottom"><div class="bottomIn">
+  <button class="nav active" onclick="go('home',this)"><b>⌂</b>Inicio</button>
+  <button class="nav" onclick="go('calendar',this)"><b>▣</b>Calendario</button>
+  <button class="nav" onclick="go('train',this)"><b>▶</b>Entrenar</button>
+  <button class="nav" onclick="go('progress',this)"><b>▥</b>Progreso</button>
+  <button class="nav" onclick="go('user',this)"><b>👤</b>Usuario</button>
+</div></nav>
+
+<div class="workout" id="workout">
+  <div class="status"><span id="wClock">9:41</span><span>▮▮▮ ︿ ▰</span></div>
+  <div class="wHead"><button class="iconBtn" onclick="closeWorkout()">‹</button><b id="wMode">ENTRENAMIENTO</b><button class="iconBtn" onclick="finishWorkout()">✓</button></div>
+  <div class="wMachine" id="wVisual"></div><h1 class="wTitle" id="wName"></h1><div class="wMeta" id="wMeta"></div>
+  <div class="wStats"><div class="wStat"><small id="metric1Label">Repeticiones</small><strong id="metric1">12</strong><div class="ctrl"><button class="round" onclick="changeMetric1(-1)">−</button><button class="round" onclick="changeMetric1(1)">+</button></div></div><div class="wStat"><small id="metric2Label">Peso (kg)</small><strong id="metric2">40</strong><div class="ctrl"><button class="round" onclick="changeMetric2(-2.5)">−</button><button class="round" onclick="changeMetric2(2.5)">+</button></div></div></div>
+  <div style="text-align:center;color:var(--muted);margin-top:14px">Descanso / intervalo</div><div class="timerRing" id="timerRing"><strong id="timer">01:30</strong></div>
+  <div class="grid2"><button class="primary purpleBg" style="margin:0" onclick="completeStep()">Siguiente →</button><button class="primary" style="margin:0;background:#14212a;color:white" onclick="toggleTimer()">⏯ Pausa</button></div>
+  <button class="primary" style="background:#111b22;color:white;border:1px solid var(--line)" onclick="finishWorkout()">Finalizar entrenamiento</button>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const KEY='dm_fitness_pro_v2';
+const defaults={profile:{name:'',height:'',goalWeight:''},frequency:4,weekdays:[1,3,5,6],available:{life:[],techno:[]},loads:{},logs:[],weights:[],prs:{},caliLevel:'Principiante',settings:{rest:90}};
+let state=load(),current='home',previous='home',selectedMachine=null,selectedType='life',filter='Todas',calDate=new Date(),timerInt=null,timerRunning=false,work={};
+
+function save(){localStorage.setItem(KEY,JSON.stringify(state))}
+function load(){try{return Object.assign({},defaults,JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(e){return JSON.parse(JSON.stringify(defaults))}}
+function toast(t){const el=document.getElementById('toast');el.textContent=t;el.style.display='block';setTimeout(()=>el.style.display='none',1700)}
+function go(id,btn){previous=current;current=id;document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.nav').forEach(n=>n.classList.remove('active'));if(btn)btn.classList.add('active');document.getElementById('topTitle').textContent=id==='home'?'DM FITNESS':id.toUpperCase();if(id==='planner')renderPlanner();if(id==='life')renderCatalog('life');if(id==='techno')renderCatalog('techno');if(id==='calisthenics')renderCali();if(id==='cardio')renderCardio();if(id==='calendar')renderCalendar();if(id==='progress')renderProgress();if(id==='user')renderUser();window.scrollTo({top:0,behavior:'smooth'})}
+function back(){if(current!=='home')go(previous||'home')}
+
+function svgBase(inner,color='#fff'){return `<svg viewBox="0 0 220 160" fill="none" xmlns="http://www.w3.org/2000/svg"><g stroke="${color}" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">${inner}</g></svg>`}
+function machineSVG(kind,color){
+ const common=`<path d="M40 135H182"/><path d="M62 135V35M62 35H138M138 35V130"/><rect x="46" y="64" width="27" height="52" rx="5"/><path d="M75 52H120"/><circle cx="116" cy="70" r="8"/>`;
+ const shapes={
+ chest:`${common}<path d="M116 78V101"/><path d="M116 88L91 102M116 88L143 100"/><path d="M91 102H76M143 100H159"/><path d="M116 101L105 126M116 101L127 126"/>`,
+ lat:`${common}<path d="M82 50H154M150 50V68"/><path d="M150 68H92"/><path d="M121 68V92"/><path d="M121 92L102 108M121 92L140 108"/><path d="M95 132H145"/>`,
+ row:`${common}<rect x="90" y="103" width="52" height="12" rx="4"/><path d="M95 103L80 88M140 103L158 82"/><path d="M158 82H178"/><path d="M110 86H140"/>`,
+ leg:`${common}<rect x="88" y="90" width="46" height="14" rx="4"/><path d="M90 90L78 72"/><path d="M132 92L160 72M160 72L174 42M160 72L178 92"/><circle cx="178" cy="92" r="9"/>`,
+ shoulder:`${common}<path d="M110 108V77"/><path d="M110 77L90 55M110 77L132 55"/><path d="M89 55H75M132 55H147"/><rect x="94" y="106" width="33" height="12" rx="4"/>`,
+ arm:`${common}<path d="M104 108V78"/><path d="M104 78L88 93M104 78L122 94"/><rect x="88" y="108" width="39" height="12" rx="4"/>`
+ };
+ return svgBase(shapes[kind]||shapes.chest,color)
+}
+function simpleIcon(type,color){const map={cali:`<circle cx="110" cy="32" r="14"/><path d="M110 47V86M72 64H148M110 86L78 128M110 86L145 128"/>`,user:`<circle cx="110" cy="50" r="24"/><path d="M65 132C72 95 148 95 155 132"/>`,cardio:`<circle cx="110" cy="31" r="12"/><path d="M110 44L90 75L121 88L145 122M92 76L67 110M118 86L94 129"/>`};return svgBase(map[type]||map.user,color)}
+
+const life=[
+{id:'life_chest',name:'Press de pecho',cat:'Pecho',kind:'chest',sets:4,reps:12,muscles:'Pectoral mayor · tríceps · deltoide anterior'},
+{id:'life_fly',name:'Pectoral Fly',cat:'Pecho',kind:'chest',sets:3,reps:12,muscles:'Pectoral mayor · deltoide anterior'},
+{id:'life_lat',name:'Jalón al pecho',cat:'Espalda',kind:'lat',sets:4,reps:10,muscles:'Dorsal ancho · bíceps'},
+{id:'life_row',name:'Remo sentado',cat:'Espalda',kind:'row',sets:3,reps:12,muscles:'Dorsal · romboides · bíceps'},
+{id:'life_shoulder',name:'Press de hombros',cat:'Hombros',kind:'shoulder',sets:3,reps:10,muscles:'Deltoides · tríceps'},
+{id:'life_leg',name:'Prensa de piernas',cat:'Piernas',kind:'leg',sets:4,reps:12,muscles:'Cuádriceps · glúteos · isquios'},
+{id:'life_extension',name:'Extensión de piernas',cat:'Piernas',kind:'leg',sets:3,reps:15,muscles:'Cuádriceps'},
+{id:'life_curl',name:'Curl femoral',cat:'Piernas',kind:'leg',sets:3,reps:12,muscles:'Isquiotibiales'},
+{id:'life_biceps',name:'Curl bíceps',cat:'Brazos',kind:'arm',sets:3,reps:12,muscles:'Bíceps · braquial'},
+{id:'life_triceps',name:'Press tríceps',cat:'Brazos',kind:'arm',sets:3,reps:12,muscles:'Tríceps'}];
+const techno=[
+{id:'tech_chest',name:'Chest Press',cat:'Pecho',kind:'chest',sets:4,reps:10,muscles:'Pectoral · tríceps'},
+{id:'tech_lat',name:'Lat Pulldown',cat:'Espalda',kind:'lat',sets:4,reps:10,muscles:'Dorsal · bíceps'},
+{id:'tech_row',name:'Low Row',cat:'Espalda',kind:'row',sets:3,reps:12,muscles:'Dorsal · romboides'},
+{id:'tech_shoulder',name:'Shoulder Press',cat:'Hombros',kind:'shoulder',sets:3,reps:10,muscles:'Deltoides · tríceps'},
+{id:'tech_leg',name:'Leg Press',cat:'Piernas',kind:'leg',sets:4,reps:12,muscles:'Cuádriceps · glúteos'},
+{id:'tech_extension',name:'Leg Extension',cat:'Piernas',kind:'leg',sets:3,reps:15,muscles:'Cuádriceps'},
+{id:'tech_curl',name:'Leg Curl',cat:'Piernas',kind:'leg',sets:3,reps:12,muscles:'Isquiotibiales'},
+{id:'tech_arm',name:'Arm Curl',cat:'Brazos',kind:'arm',sets:3,reps:12,muscles:'Bíceps'}];
+
+function renderPlanner(){
+ document.getElementById('freqSeg').innerHTML=[3,4,5].map(n=>`<button class="${state.frequency===n?'active':''}" onclick="state.frequency=${n};trimDays();renderPlanner()">${n} días</button>`).join('');
+ const names=['L','M','X','J','V','S','D'];document.getElementById('dayPick').innerHTML=names.map((x,i)=>`<button class="${state.weekdays.includes(i+1)?'on':''}" onclick="toggleDay(${i+1})">${x}</button>`).join('');
+ document.getElementById('splitText').textContent=state.frequency===3?'Full body · Torso/Pierna/Full body':state.frequency===4?'Superior/Inferior · Superior/Inferior':'Pecho · Espalda · Pierna · Torso · Full body';
+ const labels=state.frequency===3?['Full body A','Torso/Pierna','Full body B']:state.frequency===4?['Superior A','Inferior A','Superior B','Inferior B']:['Pecho + tríceps','Espalda + bíceps','Piernas','Torso','Full body'];
+ const colors=['var(--red)','var(--yellow)','var(--green)','var(--blue)','var(--purple)'];
+ const dnames={1:'Lunes',2:'Martes',3:'Miércoles',4:'Jueves',5:'Viernes',6:'Sábado',7:'Domingo'};
+ document.getElementById('planPreview').innerHTML=state.weekdays.slice().sort((a,b)=>a-b).map((d,i)=>`<div class="planRow"><div class="dayBadge" style="color:${colors[i%colors.length]}">${dnames[d].slice(0,3)}</div><div class="grow"><b>${dnames[d]}</b><small class="lead">${labels[i%labels.length]}</small></div><span style="color:${colors[i%colors.length]}">●</span></div>`).join('');
+}
+function trimDays(){while(state.weekdays.length>state.frequency)state.weekdays.pop()}
+function toggleDay(d){if(state.weekdays.includes(d))state.weekdays=state.weekdays.filter(x=>x!==d);else if(state.weekdays.length<state.frequency)state.weekdays.push(d);renderPlanner()}
+function savePlan(){if(state.weekdays.length!==state.frequency){toast('Selecciona exactamente '+state.frequency+' días');return}save();toast('Plan guardado');go('home')}
+
+function renderCatalog(type){
+ selectedType=type;const arr=type==='life'?life:techno;const color=type==='life'?'var(--red)':'var(--yellow)';const cls=type==='life'?'red':'yellow';const target=document.getElementById(type==='life'?'lifeCatalog':'techCatalog');
+ const cats=['Todas','Pecho','Espalda','Piernas','Hombros','Brazos'];
+ target.innerHTML=`<div class="card"><b>Mis máquinas disponibles</b><p class="lead">Selecciona las máquinas que realmente hay en tu gimnasio. Las rutinas usarán solo estas.</p><div class="catalogToolbar">${cats.map(c=>`<button class="chip ${filter===c?'active':''}" style="${filter===c?`background:${color};color:${type==='techno'?'#111':'#fff'};border-color:${color}`:''}" onclick="filter='${c}';renderCatalog('${type}')">${c}</button>`).join('')}</div><div class="machineGrid">${arr.filter(m=>filter==='Todas'||m.cat===filter).map(m=>machineCard(m,type,color,cls)).join('')}</div><button class="primary ${type==='life'?'redBg':'yellowBg'}" onclick="quickStrength('${type}')">Crear rutina con mis máquinas</button></div>`;
+}
+function machineCard(m,type,color,cls){const on=(state.available[type]||[]).includes(m.id);return `<div class="machineCard"><div class="machineVisual">${machineSVG(m.kind,color)}</div><div class="machineInfo"><b>${m.name}</b><small>${m.cat} · ${m.sets} × ${m.reps}</small><div class="machineBtns"><button class="miniBtn" onclick="openDetail('${type}','${m.id}')">Ver ficha</button><button class="miniBtn ${cls}" onclick="toggleMachine('${type}','${m.id}')">${on?'✓ Añadida':'+ Añadir'}</button></div></div></div>`}
+function toggleMachine(type,id){state.available[type]=state.available[type]||[];state.available[type].includes(id)?state.available[type]=state.available[type].filter(x=>x!==id):state.available[type].push(id);save();renderCatalog(type)}
+function openDetail(type,id){selectedType=type;selectedMachine=(type==='life'?life:techno).find(m=>m.id===id);const color=type==='life'?'var(--red)':'var(--yellow)',cls=type==='life'?'redBg':'yellowBg';document.getElementById('detailContent').innerHTML=`<h2 style="color:${color}">${selectedMachine.name}</h2><p class="lead">${type==='life'?'Life Fitness':'Technogym'} · ${selectedMachine.cat}</p><div class="detailGrid"><div class="detailVisual">${machineSVG(selectedMachine.kind,color)}</div><div class="muscle">${bodySVG(color)}<b>Músculos principales</b><p class="lead">${selectedMachine.muscles}</p></div></div><div class="tabs"><button class="tab active" onclick="detailTab('inst',this)">Instrucciones</button><button class="tab" onclick="detailTab('sets',this)">Series</button><button class="tab" onclick="detailTab('notes',this)">Notas</button></div><div id="detailTab"></div><button class="primary ${cls}" onclick="addToWorkout()">Añadir a mi entrenamiento</button>`;detailTab('inst',document.querySelector('.tab'));go('detail')}
+function bodySVG(color){return `<svg viewBox="0 0 180 240"><g fill="none" stroke="#d4e0e7" stroke-width="5"><circle cx="90" cy="28" r="18"/><path d="M90 47V136M55 77H125M60 80L39 141M120 80L141 141M90 136L65 219M90 136L115 219"/></g><g fill="${color}" opacity=".95"><ellipse cx="71" cy="82" rx="19" ry="11"/><ellipse cx="109" cy="82" rx="19" ry="11"/><ellipse cx="53" cy="88" rx="9" ry="17"/><ellipse cx="127" cy="88" rx="9" ry="17"/></g></svg>`}
+function detailTab(which,btn){document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));btn?.classList.add('active');const c=document.getElementById('detailTab');if(which==='inst'){const steps=['Ajusta asiento y agarres a tu altura.','Apoya completamente espalda y pies.','Realiza el movimiento controlado.','No bloquees articulaciones al final.','Vuelve lentamente a la posición inicial.'];c.innerHTML=steps.map((s,i)=>`<div class="step"><div class="n" style="background:${selectedType==='life'?'var(--red)':'var(--yellow)'}">${i+1}</div><span>${s}</span></div>`).join('')}else if(which==='sets'){const l=state.loads[selectedMachine.id]||{weight:40,type:'Placas incorporadas'};c.innerHTML=`<div class="grid2" style="margin-top:10px"><select id="loadType" class="input"><option>Placas incorporadas</option><option>Discos</option><option>Mancuernas</option><option>Barra + discos</option><option>Peso corporal</option></select><input id="loadWeight" class="input" type="number" step="2.5" value="${l.weight||40}"></div><button class="primary purpleBg" onclick="saveLoad()">Guardar carga</button>`}else{c.innerHTML=`<textarea id="noteText" class="input" rows="5" placeholder="Tus notas...">${state.loads[selectedMachine.id]?.note||''}</textarea><button class="primary purpleBg" onclick="saveNote()">Guardar nota</button>`}}
+function saveLoad(){state.loads[selectedMachine.id]={...(state.loads[selectedMachine.id]||{}),weight:+document.getElementById('loadWeight').value||0,type:document.getElementById('loadType').value};save();toast('Carga guardada')}
+function saveNote(){state.loads[selectedMachine.id]={...(state.loads[selectedMachine.id]||{}),note:document.getElementById('noteText').value};save();toast('Nota guardada')}
+function addToWorkout(){toast('Añadida al entrenamiento')}
+
+function renderCali(){const levels=['Principiante','Intermedio','Avanzado'];const map={Principiante:['Sentadilla 10','Flexiones de rodillas 6–8','Zancadas 8 total','Mountain climbers 20 s','Plancha 20 s'],Intermedio:['Sentadilla 15','Flexiones normales 10','Zancadas 12 total','Mountain climbers 30 s','Plancha con toque hombro 24'],Avanzado:['Pike push-ups 10','Flexiones explosivas 10','Pistol parcial 6/pierna','Burpees 10','Hollow hold 30 s']};document.getElementById('caliContent').innerHTML=`<div class="card"><div class="seg">${levels.map(l=>`<button class="${state.caliLevel===l?'active':''}" style="${state.caliLevel===l?'background:var(--blue);border-color:var(--blue)':''}" onclick="state.caliLevel='${l}';save();renderCali()">${l}</button>`).join('')}</div>${map[state.caliLevel].map((x,i)=>`<div class="planRow" style="margin-top:9px"><div class="dayBadge blue">${i+1}</div><div class="grow"><b>${x}</b><small class="lead">EMOM · resto del minuto descanso</small></div></div>`).join('')}<button class="primary blueBg" onclick="startCali()">Empezar 15 minutos</button></div>`}
+function startCali(){const list=[{name:'Sentadillas',kind:'cali'},{name:'Flexiones',kind:'cali'},{name:'Zancadas',kind:'cali'},{name:'Mountain climbers',kind:'cali'},{name:'Plancha',kind:'cali'}];work={type:'calisthenics',queue:list,i:0,set:1,reps:1,weight:0,seconds:60,started:Date.now()};openWorkout()}
+
+function renderCardio(){const arr=[['Cinta','tread',20,'Moderado'],['Bicicleta','bike',30,'Zona 2'],['Elíptica','elliptical',40,'Resistencia'],['HIIT','tread',20,'Intervalos']];document.getElementById('cardioContent').innerHTML=`<div class="machineGrid">${arr.map(x=>`<div class="machineCard"><div class="machineVisual">${cardioSVG(x[1],'var(--green)')}</div><div class="machineInfo"><b>${x[0]}</b><small>${x[2]} min · ${x[3]}</small><button class="primary greenBg" onclick="startCardio('${x[0]}',${x[2]},'${x[3]}')">Empezar</button></div></div>`).join('')}</div>`}
+function cardioSVG(kind,color){const shapes={tread:`<path d="M36 128H184M59 112H164L184 128H45Z"/><path d="M145 111V52M145 52H172"/><circle cx="110" cy="42" r="10"/><path d="M110 53L96 78L118 88L137 111M97 78L80 100"/>`,bike:`<circle cx="68" cy="114" r="30"/><circle cx="155" cy="114" r="30"/><path d="M68 114L104 72L127 114H68ZM104 72H137M125 114L145 76M145 76H160"/><circle cx="112" cy="40" r="10"/><path d="M112 51L133 70L147 80"/>`,elliptical:`<path d="M55 132H172M74 132L105 70L140 132M105 70V35M105 35H137M137 35V95"/><circle cx="100" cy="45" r="9"/><path d="M100 55L84 82L112 98M83 82L68 108"/>`};return svgBase(shapes[kind]||shapes.tread,color)}
+
+function quickStrength(type){const arr=type==='life'?life:techno;let pool=(state.available[type]||[]).length?arr.filter(m=>state.available[type].includes(m.id)):arr;const order=['Pecho','Espalda','Piernas','Hombros','Brazos'];let q=[];order.forEach(c=>{const m=pool.find(x=>x.cat===c);if(m)q.push(m)});q=q.slice(0,state.frequency===3?5:state.frequency===4?6:7);work={type,queue:q,i:0,set:1,reps:q[0]?.reps||12,weight:state.loads[q[0]?.id]?.weight||40,seconds:state.settings.rest||90,started:Date.now()};openWorkout()}
+function startCardio(name,duration,intensity){work={type:'cardio',queue:[{name,kind:'tread'}],i:0,set:1,reps:0,weight:0,seconds:duration*60,duration,intensity,started:Date.now()};openWorkout()}
+function openWorkout(){clearInterval(timerInt);timerRunning=false;document.getElementById('workout').classList.add('show');loadStep()}
+function loadStep(){const x=work.queue[work.i];if(!x)return finishWorkout();const color=work.type==='life'?'var(--red)':work.type==='techno'?'var(--yellow)':work.type==='cardio'?'var(--green)':'var(--blue)';document.getElementById('wMode').textContent=work.type==='life'?'LIFE FITNESS':work.type==='techno'?'TECHNOGYM':work.type==='cardio'?'CARDIO':'DM CALISTENIA';document.getElementById('wVisual').innerHTML=work.type==='cardio'?cardioSVG('tread',color):work.type==='calisthenics'?simpleIcon('cali',color):machineSVG(x.kind,color);document.getElementById('wName').textContent=x.name;
+ if(work.type==='cardio'){document.getElementById('metric1Label').textContent='Tiempo';document.getElementById('metric2Label').textContent='Intensidad';document.getElementById('metric1').textContent=work.duration+' min';document.getElementById('metric2').textContent=work.intensity;document.getElementById('wMeta').textContent='Sesión guiada';}
+ else if(work.type==='calisthenics'){document.getElementById('metric1Label').textContent='Vuelta';document.getElementById('metric2Label').textContent='Ejercicio';document.getElementById('metric1').textContent=work.set+'/3';document.getElementById('metric2').textContent=(work.i+1)+'/'+work.queue.length;document.getElementById('wMeta').textContent='EMOM · 60 segundos';}
+ else{work.reps=x.reps;work.weight=state.loads[x.id]?.weight||40;document.getElementById('metric1Label').textContent='Repeticiones';document.getElementById('metric2Label').textContent='Peso (kg)';document.getElementById('metric1').textContent=work.reps;document.getElementById('metric2').textContent=work.weight;document.getElementById('wMeta').textContent=`Serie ${work.set} de ${x.sets}`;}
+ updateTimer();startTimer();}
+function changeMetric1(n){if(work.type==='life'||work.type==='techno'){work.reps=Math.max(1,work.reps+n);document.getElementById('metric1').textContent=work.reps}}
+function changeMetric2(n){if(work.type==='life'||work.type==='techno'){work.weight=Math.max(0,Math.round((work.weight+n)*10)/10);document.getElementById('metric2').textContent=work.weight}}
+function completeStep(){const x=work.queue[work.i];if(work.type==='cardio')return finishWorkout();if(work.type==='calisthenics'){work.i++;if(work.i>=work.queue.length){work.i=0;work.set++;if(work.set>3)return finishWorkout()}work.seconds=60;loadStep();return}state.loads[x.id]={...(state.loads[x.id]||{}),weight:work.weight};state.prs[x.id]=Math.max(state.prs[x.id]||0,work.weight);save();if(work.set<x.sets){work.set++;work.seconds=state.settings.rest||90;loadStep()}else{work.i++;work.set=1;if(work.i>=work.queue.length)return finishWorkout();work.seconds=state.settings.rest||90;loadStep()}}
+function startTimer(){clearInterval(timerInt);timerRunning=true;timerInt=setInterval(()=>{work.seconds--;if(work.seconds<=0){clearInterval(timerInt);timerRunning=false;work.seconds=0}updateTimer()},1000)}
+function toggleTimer(){if(timerRunning){clearInterval(timerInt);timerRunning=false}else startTimer()}
+function updateTimer(){const s=Math.max(0,work.seconds),m=Math.floor(s/60),sec=s%60;document.getElementById('timer').textContent=`${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;const base=work.type==='cardio'?work.duration*60:work.type==='calisthenics'?60:(state.settings.rest||90);document.getElementById('timerRing').style.setProperty('--p',`${Math.max(0,Math.min(100,s/base*100))}%`)}
+function finishWorkout(){clearInterval(timerInt);timerRunning=false;const mins=Math.max(1,Math.round((Date.now()-work.started)/60000));let volume=0,distance=0;if(work.type==='life'||work.type==='techno')work.queue.forEach(x=>volume+=(state.loads[x.id]?.weight||40)*x.reps*x.sets);if(work.type==='cardio')distance=Math.round(work.duration*.12*10)/10;state.logs.push({date:new Date().toISOString().slice(0,10),type:work.type,minutes:work.type==='cardio'?work.duration:mins,volume,distance,kcal:Math.round((work.type==='cardio'?work.duration:mins)*(work.type==='cardio'?8:7.2)),name:document.getElementById('wMode').textContent});save();document.getElementById('workout').classList.remove('show');toast('Entrenamiento guardado ✅');renderProgress();renderCalendar()}
+function closeWorkout(){clearInterval(timerInt);timerRunning=false;document.getElementById('workout').classList.remove('show')}
+
+function changeMonth(n){calDate.setMonth(calDate.getMonth()+n);renderCalendar()}
+function renderCalendar(){const y=calDate.getFullYear(),m=calDate.getMonth();document.getElementById('calTitle').textContent=calDate.toLocaleDateString('es-ES',{month:'long',year:'numeric'});let first=new Date(y,m,1).getDay();first=first===0?6:first-1;let html='';for(let i=0;i<first;i++)html+='<div></div>';const max=new Date(y,m+1,0).getDate(),today=new Date();for(let d=1;d<=max;d++){const dt=`${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`,logs=state.logs.filter(l=>l.date===dt),c=logs[0]?.type==='life'?'var(--red)':logs[0]?.type==='techno'?'var(--yellow)':logs[0]?.type==='cardio'?'var(--green)':logs[0]?.type==='calisthenics'?'var(--blue)':'transparent';html+=`<button class="day ${today.getFullYear()===y&&today.getMonth()===m&&today.getDate()===d?'today':''}" onclick="showDay('${dt}')">${d}${logs.length?`<i class="dot" style="background:${c}"></i>`:''}</button>`}document.getElementById('calDays').innerHTML=html}
+function showDay(dt){const logs=state.logs.filter(l=>l.date===dt);document.getElementById('dayInfo').innerHTML=logs.length?logs.map(l=>`<div class="card"><b>${l.name}</b><p class="lead">${l.minutes} min · ${l.kcal} kcal${l.volume?' · '+l.volume.toLocaleString('es-ES')+' kg':''}${l.distance?' · '+l.distance+' km':''}</p></div>`).join(''):'<div class="card lead">Sin actividad registrada.</div>'}
+function renderProgress(){const logs=state.logs,totalMin=logs.reduce((a,b)=>a+b.minutes,0),vol=logs.reduce((a,b)=>a+(b.volume||0),0),dist=logs.reduce((a,b)=>a+(b.distance||0),0);document.getElementById('progressStats').innerHTML=`<div class="stat"><small>Entrenamientos</small><strong>${logs.length}</strong></div><div class="stat"><small>Tiempo total</small><strong>${totalMin} min</strong></div><div class="stat"><small>Volumen</small><strong>${Math.round(vol).toLocaleString('es-ES')} kg</strong></div><div class="stat"><small>Distancia cardio</small><strong>${dist.toFixed(1)} km</strong></div>`;document.getElementById('weightHistory').innerHTML=state.weights.slice(-5).reverse().map(w=>`<div class="card"><b>${w.value} kg</b><span style="float:right;color:var(--muted)">${w.date}</span></div>`).join('');const all=[...life,...techno];document.getElementById('prs').innerHTML=Object.entries(state.prs).sort((a,b)=>b[1]-a[1]).slice(0,8).map(([id,v])=>`<div class="card"><b>${all.find(x=>x.id===id)?.name||id}</b><span style="float:right">${v} kg</span></div>`).join('')||'<p class="lead">Aún no hay récords registrados.</p>'}
+function addWeight(){const v=parseFloat(document.getElementById('weightInput').value);if(!v)return;state.weights.push({date:new Date().toISOString().slice(0,10),value:v});save();renderProgress();toast('Peso guardado')}
+function saveProfile(){state.profile.name=document.getElementById('nameInput').value;state.profile.height=document.getElementById('heightInput').value;state.profile.goalWeight=document.getElementById('goalWeightInput').value;save()}
+function renderUser(){document.getElementById('nameInput').value=state.profile.name||'';document.getElementById('heightInput').value=state.profile.height||'';document.getElementById('goalWeightInput').value=state.profile.goalWeight||'';const logs=state.logs,mins=logs.reduce((a,b)=>a+b.minutes,0),vol=logs.reduce((a,b)=>a+(b.volume||0),0),kcal=logs.reduce((a,b)=>a+b.kcal,0);document.getElementById('userStats').innerHTML=`<div class="stat"><small>Entrenamientos</small><strong>${logs.length}</strong></div><div class="stat"><small>Tiempo</small><strong>${mins} min</strong></div><div class="stat"><small>Volumen</small><strong>${Math.round(vol).toLocaleString('es-ES')} kg</strong></div><div class="stat"><small>kcal estimadas</small><strong>${kcal.toLocaleString('es-ES')}</strong></div>`}
+function exportData(){const b=new Blob([JSON.stringify(state,null,2)],{type:'application/json'}),u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download='DM_Fitness_backup.json';a.click();URL.revokeObjectURL(u)}
+function tick(){const t=new Date().toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit'});document.getElementById('clock').textContent=t;document.getElementById('wClock').textContent=t}
+tick();setInterval(tick,30000);
+
+document.getElementById('icoCali').innerHTML=simpleIcon('cali','var(--blue)');
+document.getElementById('icoLife').innerHTML=machineSVG('chest','var(--red)');
+document.getElementById('icoTech').innerHTML=machineSVG('lat','var(--yellow)');
+document.getElementById('icoCardio').innerHTML=simpleIcon('cardio','var(--green)');
+document.getElementById('icoUser').innerHTML=simpleIcon('user','var(--purple)');
+document.getElementById('icoCali2').innerHTML=simpleIcon('cali','var(--blue)');
+document.getElementById('icoLife2').innerHTML=machineSVG('chest','var(--red)');
+document.getElementById('icoTech2').innerHTML=machineSVG('lat','var(--yellow)');
+document.getElementById('icoCardio2').innerHTML=simpleIcon('cardio','var(--green)');
+renderPlanner();renderCatalog('life');renderCatalog('techno');renderCali();renderCardio();renderCalendar();renderProgress();renderUser();
+</script>
+</body>
+</html>
