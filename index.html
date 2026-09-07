@@ -331,7 +331,7 @@ function exerciseDetail(id){const e=EXLIB.find(x=>x.id===id);if(!e)return;const 
 function startAutoGymCounter(){clearInterval(window._autoRepTimer);if(!gymRun||gymRun.paused)return;const cadence=Math.max(1.5,Number(state.repCadence||2.5));window._autoRepTimer=setInterval(()=>{if(!gymRun||gymRun.paused)return;gymRun.done=Math.min(gymRun.target,gymRun.done+1);saveGymSnapshot('exercise');const num=document.getElementById('v2RepNum');if(num)num.textContent=gymRun.done;const ring=document.getElementById('v2Ring');if(ring)ring.style.setProperty('--pct',Math.round(gymRun.done/gymRun.target*100)+'%');if(gymRun.done>=gymRun.target){clearInterval(window._autoRepTimer);beep(1000,.13);setTimeout(()=>{if(gymRun&&gymRun.done>=gymRun.target)completeGymSet()},650)}},cadence*1000)}
 function toggleGym(){if(!gymRun)return;gymRun.paused=!gymRun.paused;saveGymSnapshot();const p=document.getElementById('v2Pause');if(p)p.textContent=gymRun.paused?'▶':'Ⅱ';if(gymRun.paused)clearInterval(window._autoRepTimer);else startAutoGymCounter()}
 function v2GymRep(d){if(!gymRun)return;gymRun.done=Math.max(0,Math.min(gymRun.target,gymRun.done+d));saveGymSnapshot();renderGymExercise()}
-function renderGymExercise(){const g=gymRun;if(!g||!g.m)return;const e=genericForMachine(g.m),last=state.weights[g.m.id]||0;const pct=Math.round(((g.i)+(g.set-1)/Math.max(1,g.sets))/g.items.length*100);const repPct=Math.round((g.done/g.target)*100);saveGymSnapshot('exercise');const visual=e.id==='db_incline'?`<img src="${V2ASSET.work_art}">`:`${exArt(e,g.done>0?1:0)}`;const html=`<div class="v2Train"><div class="v2Head" style="margin-left:0;margin-right:0"><button class="v2Back" onclick="pauseWholeGym()">‹</button><h1 style="font-size:20px;margin:auto">Entrenamiento</h1><span style="font-size:22px">•••</span></div><div class="route">Día 1 · ${PLANS[selectedLevel]?.[selectedType]?.[selectedPlan]||'Entrenamiento'}</div><div class="v2ProgressBar"><i style="width:${Math.max(4,pct)}%"></i></div><div class="v2TrainCard"><div class="ctop"><small>Ejercicio ${g.i+1} de ${g.items.length}</small><h2>${e.name}</h2><div class="musLine">${e.mus.slice(0,3).join(' · ')}</div></div><div class="v2TrainVisual"><div class="visual">${visual}</div><div class="v2Counter"><div class="ring" id="v2Ring" style="--pct:${repPct}%"><div><div class="label">REPETICIÓN</div><div class="num" id="v2RepNum">${g.done}</div><div class="of">/ ${g.target}</div></div></div><div class="series">SERIE ${g.set} / ${g.sets}</div><div class="v2CountControls"><button onclick="v2GymRep(-1)">−</button><button class="v2Pause" id="v2Pause" onclick="toggleGym()">${g.paused?'▶':'Ⅱ'}</button><button onclick="v2GymRep(1)">+</button></div></div></div></div><div class="v2Metrics"><div class="v2Metric" onclick="gymWeight(2.5)"><small>PESO</small><b id="gymKg">${last} kg</b></div><div class="v2Metric"><small>DESCANSO</small><b>${g.m.rest||90} s</b></div><div class="v2Metric"><small>RITMO</small><b>${state.repCadence||2.5} s</b></div></div><div class="v2Coach">ⓘ Mantén el core activado y controla el movimiento.</div><div class="v2RestBar"><div class="side" onclick="g.i=Math.max(0,g.i-1);renderGymExercise()">‹<br>Anterior</div><div class="restRing">01:30</div><div class="side" onclick="completeGymSet()">›<br>Siguiente</div></div></div>`;v2Render(html,'Entrenamiento',false,'gym');startAutoGymCounter()}
+function renderGymExercise(){const g=gymRun;if(!g||!g.m)return;const e=genericForMachine(g.m),last=state.weights[g.m.id]||0;const pct=Math.round(((g.i)+(g.set-1)/Math.max(1,g.sets))/g.items.length*100);const repPct=Math.round((g.done/g.target)*100);saveGymSnapshot('exercise');const visual=exArt(e,g.done>0?1:0);const html=`<div class="v2Train"><div class="v2Head" style="margin-left:0;margin-right:0"><button class="v2Back" onclick="pauseWholeGym()">‹</button><h1 style="font-size:20px;margin:auto">Entrenamiento</h1><span style="font-size:22px">•••</span></div><div class="route">Día 1 · ${PLANS[selectedLevel]?.[selectedType]?.[selectedPlan]||'Entrenamiento'}</div><div class="v2ProgressBar"><i style="width:${Math.max(4,pct)}%"></i></div><div class="v2TrainCard"><div class="ctop"><small>Ejercicio ${g.i+1} de ${g.items.length}</small><h2>${e.name}</h2><div class="musLine">${e.mus.slice(0,3).join(' · ')}</div></div><div class="v2TrainVisual"><div class="visual">${visual}</div><div class="v2Counter"><div class="ring" id="v2Ring" style="--pct:${repPct}%"><div><div class="label">REPETICIÓN</div><div class="num" id="v2RepNum">${g.done}</div><div class="of">/ ${g.target}</div></div></div><div class="series">SERIE ${g.set} / ${g.sets}</div><div class="v2CountControls"><button onclick="v2GymRep(-1)">−</button><button class="v2Pause" id="v2Pause" onclick="toggleGym()">${g.paused?'▶':'Ⅱ'}</button><button onclick="v2GymRep(1)">+</button></div></div></div></div><div class="v2Metrics"><div class="v2Metric" onclick="gymWeight(2.5)"><small>PESO</small><b id="gymKg">${last} kg</b></div><div class="v2Metric"><small>DESCANSO</small><b>${g.m.rest||90} s</b></div><div class="v2Metric"><small>RITMO</small><b>${state.repCadence||2.5} s</b></div></div><div class="v2Coach">ⓘ Mantén el core activado y controla el movimiento.</div><div class="v2RestBar"><div class="side" onclick="g.i=Math.max(0,g.i-1);renderGymExercise()">‹<br>Anterior</div><div class="restRing">01:30</div><div class="side" onclick="completeGymSet()">›<br>Siguiente</div></div></div>`;v2Render(html,'Entrenamiento',false,'gym');startAutoGymCounter()}
 function progress(){const gymLogs=state.logs.filter(x=>x.kind==='gym');const sessions=gymLogs.length||state.history.length;const mins=Math.round((gymLogs.reduce((a,x)=>a+(x.minutes||0),0))||sessions*32);const vol=Math.round(state.history.reduce((a,x)=>a+(Number(x.kg)||0)*(Number(x.reps)||0),0));const kcal=Math.round(mins*7.5);const pts=[122,120,118,116,115,114,111];const poly=pts.map((v,i)=>`${i*52},${145-(v-105)*5}`).join(' ');const html=`<div class="v2ProgressPage"><div class="v2Head" style="margin-left:0;margin-right:0"><h1>Progreso</h1></div><div class="v2Segment"><button class="on">Resumen</button><button>Estadísticas</button><button>Historial</button></div><div class="v2Segment"><button class="on">Semanal</button><button>Mensual</button><button>Anual</button></div><div class="v2Stats"><div class="v2Stat"><small>🏋︎ Entrenamientos</small><b>${sessions}</b><em>↑ actividad registrada</em></div><div class="v2Stat"><small>◷ Tiempo total</small><b>${Math.floor(mins/60)}h ${mins%60}min</b><em>↑ constancia</em></div><div class="v2Stat"><small>▥ Volumen total</small><b>${vol.toLocaleString('es-ES')} kg</b><em>↑ progreso</em></div><div class="v2Stat"><small>🔥 Calorías estimadas</small><b>${kcal.toLocaleString('es-ES')} kcal</b><em>estimación</em></div></div><div class="v2Chart"><h3>Evolución de peso</h3><svg viewBox="0 0 320 160"><path d="M0 25H320M0 65H320M0 105H320M0 145H320" stroke="#153746" stroke-width="1"/><polyline points="${poly}" fill="none" stroke="#13a8ff" stroke-width="3"/><g fill="#13a8ff">${pts.map((v,i)=>`<circle cx="${i*52}" cy="${145-(v-105)*5}" r="4"/>`).join('')}</g></svg></div><div class="v2Achievement"><div class="cup">🏆</div><div><b>Logros</b><small>${Math.min(7,sessions)} objetivos completados</small></div><div style="margin-left:auto">›</div></div></div>`;v2Render(html,'Progreso',true,'prog')}
 function moreHome(){const html=`<div class="v2Head" style="margin-left:6px"><h1>Más</h1></div><div class="v2More"><div class="v2MoreCard" onclick="caliHome()"><div class="i">⌗</div><div><b>Calistenia</b><small>Tu módulo completo de siempre</small></div><div class="a">›</div></div><div class="v2MoreCard" onclick="cardioHome()"><div class="i">♡</div><div><b>Cardio</b><small>Clases y entrenamientos</small></div><div class="a">›</div></div><div class="v2MoreCard" onclick="favoritesHome()"><div class="i">♥</div><div><b>Favoritos</b><small>Ejercicios guardados</small></div><div class="a">›</div></div><div class="v2MoreCard" onclick="openSettings()"><div class="i">⚙</div><div><b>Ajustes</b><small>Personaliza la aplicación</small></div><div class="a">›</div></div></div>`;v2Render(html,'Más',true,'more')}
 // Calistenia mantiene su estructura interna: solo ajustamos la navegación al salir/entrar.
@@ -388,6 +388,63 @@ function renderCaliRun(){
 }
 function pauseCaliExit(){if(caliRun){caliRun.paused=true;state.active={kind:'cali',l:caliRun.l,w:caliRun.w,idx:caliRun.idx,round:caliRun.round,started:caliRun.started};save()}caliHome()}
 
+// ===== CALISTENIA · CONTEO AUTOMÁTICO DE REPETICIONES =====
+function startCaliPro(l,w){
+ clearGuide();
+ caliRun={l,w,arr:CALI2[l][w],idx:0,round:1,repDone:0,minuteLeft:60,workLeft:null,paused:false,started:Date.now(),repAccum:0,lastTick:performance.now(),autoFinishing:false};
+ state.active={kind:'cali',l,w,idx:0,round:1,started:caliRun.started};save();
+ countdown(()=>{wake(true);renderCaliRun()})
+}
+function caliRep(d){
+ if(!caliRun)return;const x=caliRun.arr[caliRun.idx];if(!x.reps)return;
+ caliRun.repDone=Math.max(0,Math.min(x.reps,caliRun.repDone+d));
+ caliRun.repAccum=0;
+ const a=$('#repDone'),b=$('#repRemain');if(a)a.textContent=caliRun.repDone;if(b)b.textContent=caliRun.repDone>=x.reps?'Serie completada':'Quedan '+(x.reps-caliRun.repDone);
+ if(caliRun.repDone>=x.reps&&!caliRun.autoFinishing){caliRun.autoFinishing=true;beep(1050,.16);setTimeout(()=>completeCaliExercise(false),350)}
+}
+function toggleCali(){
+ if(!caliRun)return;caliRun.paused=!caliRun.paused;caliRun.lastTick=performance.now();
+ const b=$('#caliPlay');if(b)b.textContent=caliRun.paused?'▶':'Ⅱ';
+ const st=$('#caliAutoStatus');if(st)st.textContent=caliRun.paused?'PAUSADO':'CONTEO AUTOMÁTICO';
+}
+function startCaliTick(){
+ clearGuide();if(!caliRun)return;
+ const x=caliRun.arr[caliRun.idx];
+ if(!x.reps&&caliRun.workLeft==null)caliRun.workLeft=x.sec;
+ caliRun.lastTick=performance.now();caliRun.repAccum=caliRun.repAccum||0;caliRun.autoFinishing=false;
+ guideTimer=setInterval(()=>{
+   if(!caliRun||caliRun.paused)return;
+   const now=performance.now(),dt=Math.min(0.35,(now-(caliRun.lastTick||now))/1000);caliRun.lastTick=now;
+   caliRun._minuteFrac=(caliRun._minuteFrac||0)+dt;
+   if(caliRun._minuteFrac>=1){const whole=Math.floor(caliRun._minuteFrac);caliRun._minuteFrac-=whole;caliRun.minuteLeft=Math.max(0,caliRun.minuteLeft-whole);if(!x.reps&&caliRun.workLeft>0)caliRun.workLeft=Math.max(0,caliRun.workLeft-whole)}
+   const mt=$('#caliMinute');if(mt)mt.textContent=Math.ceil(caliRun.minuteLeft)+' s';
+   if(x.reps){
+     const cadence=Math.max(1.5,Number(state.repCadence)||2.5);
+     caliRun.repAccum+=dt;
+     const phase=Math.min(1,caliRun.repAccum/cadence);
+     const ring=$('#caliRepRing');if(ring)ring.style.setProperty('--pct',(phase*100)+'%');
+     const ph=$('#caliRepPhase');if(ph)ph.textContent=phase<.5?'INICIO':'FINAL';
+     if(caliRun.repAccum>=cadence&&caliRun.repDone<x.reps){
+       caliRun.repAccum-=cadence;caliRun.repDone++;
+       const a=$('#repDone'),b=$('#repRemain');if(a)a.textContent=caliRun.repDone;if(b)b.textContent=caliRun.repDone>=x.reps?'Serie completada':'Quedan '+(x.reps-caliRun.repDone);
+       beep(caliRun.repDone===x.reps?1050:700,caliRun.repDone===x.reps?.13:.035);
+       if(caliRun.repDone>=x.reps&&!caliRun.autoFinishing){caliRun.autoFinishing=true;setTimeout(()=>completeCaliExercise(false),320);return}
+     }
+   }else{
+     const wt=$('#workTime');if(wt)wt.textContent=Math.max(0,Math.ceil(caliRun.workLeft));
+     if(caliRun.workLeft<=0&&!caliRun.autoFinishing){caliRun.autoFinishing=true;beep(1050,.14);setTimeout(()=>completeCaliExercise(false),320);return}
+   }
+   if(caliRun.minuteLeft<=0&&!caliRun.autoFinishing){caliRun.autoFinishing=true;completeCaliExercise(true)}
+ },100)
+}
+function renderCaliRun(){
+ const x=caliRun.arr[caliRun.idx],total=(caliRun.round-1)*5+caliRun.idx+1;
+ const fake={kind:(x.n.toLowerCase().includes('sentadilla')?'squat':x.n.toLowerCase().includes('flex')||x.n.toLowerCase().includes('push')?'pushup':x.n.toLowerCase().includes('plancha')?'plank':'body')};
+ const cadence=Math.max(1.5,Number(state.repCadence)||2.5);
+ v3Render(`${v3Head('Entrenamiento','Calistenia · vuelta '+caliRun.round+'/3','pauseCaliExit()')}<div class="v2ProgressBar"><i style="width:${Math.round(total/15*100)}%"></i></div><div class="v3CaliTrain"><small>Ejercicio ${caliRun.idx+1} de 5</small><h2>${x.n}</h2><p>${x.m.join(' · ')}</p><div class="v2Pair"><div class="v2Phase"><div class="svgWrap">${personSVG(fake.kind,0)}</div><b>1 &nbsp; Inicio</b></div><div class="v2Phase"><div class="svgWrap">${personSVG(fake.kind,1)}</div><b>2 &nbsp; Final</b></div></div>${x.reps?`<div class="v3AutoCount"><div><small id="caliAutoStatus">CONTEO AUTOMÁTICO · ${cadence.toFixed(1)} s/rep</small><b><span id="repDone">${caliRun.repDone}</span> / ${x.reps}</b><em id="repRemain">Quedan ${Math.max(0,x.reps-caliRun.repDone)}</em><div id="caliRepRing" style="--pct:0%;height:5px;margin-top:10px;border-radius:9px;background:linear-gradient(90deg,#19a9ff var(--pct),rgba(255,255,255,.1) var(--pct))"></div><small id="caliRepPhase" style="display:block;margin-top:7px;color:#27b8ff">INICIO</small></div><button id="caliPlay" onclick="toggleCali()">${caliRun.paused?'▶':'Ⅱ'}</button></div><div class="v3Stepper" style="justify-content:center;margin-top:10px"><button onclick="caliRep(-1)">−1</button><b>Ajustar conteo</b><button onclick="caliRep(1)">+1</button></div>`:`<div class="v3AutoCount"><div><small id="caliAutoStatus">TIEMPO AUTOMÁTICO</small><b><span id="workTime">${caliRun.workLeft??x.sec}</span> s</b><em>Trabajo controlado</em></div><button id="caliPlay" onclick="toggleCali()">${caliRun.paused?'▶':'Ⅱ'}</button></div>`}<div class="v3CaliMetrics"><div><small>MINUTO</small><b id="caliMinute">${Math.ceil(caliRun.minuteLeft)} s</b></div><div><small>PROGRESO</small><b>${total}/15</b></div><div><small>SIGUIENTE</small><b>${nextCaliName()}</b></div></div><button class="v2Primary" onclick="completeCaliExercise()">✓ COMPLETAR EJERCICIO</button></div>`,'Calistenia','more',false);startCaliTick()
+}
+
+
 function cardioHome(){const n=state.logs.filter(x=>x.kind==='cardio').length;v3Render(`${v3Head('Cardio','Resistencia · salud · rendimiento','home()')}<div class="v3Feature cardio"><div><span>ENTRENAMIENTO CARDIO</span><h2>Muévete mejor</h2><p>Sesiones guiadas por tiempo e intensidad.</p><button onclick="cardioClasses()">VER CLASES</button></div><div class="v3FeatureIcon">${v3Icon('cardio')}</div></div><div class="v3Summary"><div><small>SESIONES</small><b>${n}</b></div><div><small>CLASES</small><b>4</b></div><div><small>MÁQUINAS</small><b>${DB.cardio.length}</b></div></div>${v3Card('cardio','Clases guiadas','20 · 30 · 40 min','cardioClasses()','green')}${v3Card('search','Máquinas cardio','Cinta · bici · elíptica · remo','cardioCatalog()','green')}`,'Cardio','more',true)}
 function cardioCatalog(){v3Render(`${v3Head('Máquinas cardio','Elige tu equipo','cardioHome()')}<div class="v3List">${DB.cardio.map((m,i)=>`<div class="v3ExerciseRow"><div class="n green">${i+1}</div><div><b>${genericName(m.name)}</b><small>Cardio · entrenamiento por tiempo</small></div></div>`).join('')}</div>`,'Cardio','more',true)}
 function cardioClasses(){const c=[['20 min','Suave','Base aeróbica'],['30 min','Moderada','Resistencia'],['40 min','Intensa','Rendimiento'],['30 min','Intervalos','HIIT']];v3Render(`${v3Head('Clases guiadas','Elige tu sesión','cardioHome()')}<div class="v3ClassGrid">${c.map((x,i)=>`<div class="v3Class" onclick="startCardio(${parseInt(x[0])},'${x[1]}')"><span>0${i+1}</span><b>${x[0]}</b><h3>${x[1]}</h3><small>${x[2]}</small><em>Empezar ›</em></div>`).join('')}</div>`,'Clases','more',true)}
@@ -404,4 +461,75 @@ function openSettings(){v3Render(`${v3Head('Ajustes','Personaliza y protege tus 
 function moreHome(){v3Render(`${v3Head('Más','Todo lo demás, con el mismo diseño','home()')}${v3Card('bolt','Calistenia','Rutinas y programa de 15 min','caliHome()')}${v3Card('cardio','Cardio','Clases y sesiones guiadas','cardioHome()','green')}${v3Card('heart','Favoritos','Ejercicios guardados','favoritesHome()','red')}${v3Card('calendar','Calendario','Tu actividad por días','calendar()')}${v3Card('user','Mi perfil','Resumen de actividad','profile()')}${v3Card('gear','Ajustes','Ritmo, datos y preferencias','openSettings()')}`,'Más','more',true)}
 
 setInterval(()=>{$('#clock').textContent=new Date().toLocaleTimeString('es',{hour:'2-digit',minute:'2-digit'})},30000);if(!resumeActiveSession())home();
-</script></body></html>
+</script>
+
+/* === ILUSTRACIONES UNIFICADAS · ESTILO DM FITNESS === */
+<style>
+.v2Phase,.phaseCard,.exerciseTile .art,.v3ExerciseGrid .art{background:linear-gradient(180deg,#f8fafb,#eef3f6)!important}
+.v2Phase svg,.phaseCard svg,.exerciseTile .art svg,.v3ExerciseGrid .art svg{width:100%;height:auto;display:block}
+.v2Phase img,.phaseCard img{filter:none!important}
+.dmIllustration{display:block;width:100%;height:auto}
+</style>
+<script>
+function personSVG(kind='press',phase=0){
+ const end=phase===1;
+ const A='#161d22', SK='#d9976f', SK2='#b96f4d', CLO='#11181d', EQ='#66757f', EQ2='#9aa6ad', BLUE='#149cff', SH='#cfd8dd';
+ const head=(x,y)=>`<circle cx="${x}" cy="${y}" r="8.5" fill="${SK}" stroke="${A}" stroke-width="2.5"/><path d="M${x-7} ${y-6}q7-8 14 0" fill="none" stroke="${A}" stroke-width="3" stroke-linecap="round"/>`;
+ const limb=(d,w=9,col=SK)=>`<path d="${d}" fill="none" stroke="${col}" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round"/>`;
+ const bone=(d,w=3,col=A)=>`<path d="${d}" fill="none" stroke="${col}" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round"/>`;
+ const db=(x,y)=>`<g><rect x="${x-9}" y="${y-3}" width="18" height="6" rx="3" fill="${A}"/><circle cx="${x-11}" cy="${y}" r="6" fill="${A}"/><circle cx="${x+11}" cy="${y}" r="6" fill="${A}"/></g>`;
+ const arrow=(x=137,y1=62,y2=26)=>`<path d="M${x} ${y1}V${y2}" stroke="${BLUE}" stroke-width="5" stroke-linecap="round"/><path d="M${x-7} ${y2+8}L${x} ${y2}l7 8" fill="none" stroke="${BLUE}" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>`;
+ const base=`<defs><filter id="s" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="#8aa0ad" flood-opacity=".22"/></filter></defs><ellipse cx="80" cy="140" rx="56" ry="5" fill="#dfe6ea"/>`;
+ let body='';
+ if(['press','incline','fly'].includes(kind)){
+   const bench=kind==='incline'?`<path d="M38 119L70 68L115 118" stroke="${EQ}" stroke-width="9" fill="none" stroke-linecap="round"/><path d="M66 71L111 114" stroke="${EQ2}" stroke-width="13" stroke-linecap="round"/>`:`<path d="M31 112H126M45 112l14-28h53l11 28" stroke="${EQ}" stroke-width="8" fill="none" stroke-linecap="round"/>`;
+   const hx=kind==='incline'?77:82, hy=kind==='incline'?58:70;
+   const torso=kind==='incline'?`<path d="M76 67L93 92" stroke="${CLO}" stroke-width="20" stroke-linecap="round"/>`:`<path d="M73 78L97 94" stroke="${CLO}" stroke-width="20" stroke-linecap="round"/>`;
+   const legs=kind==='incline'?`${limb('M92 94L112 113L126 131',10,CLO)}${limb('M88 95L69 116L62 135',10,CLO)}`:`${limb('M91 95L111 111L123 133',10,CLO)}${limb('M86 96L67 113L59 133',10,CLO)}`;
+   if(kind==='fly'){
+     body=`${bench}${head(hx,hy)}${torso}${legs}${end?`${limb('M82 75L68 42',8,SK)}${limb('M91 80L105 42',8,SK)}${db(66,38)}${db(107,38)}`:`${limb('M81 76L48 70',8,SK)}${limb('M92 80L125 70',8,SK)}${db(44,70)}${db(129,70)}`}${arrow(143,80,42)}`;
+   } else {
+     body=`${bench}${head(hx,hy)}${torso}${legs}${end?`${limb('M80 75L70 37',8,SK)}${limb('M93 80L104 37',8,SK)}${db(69,33)}${db(105,33)}`:`${limb('M80 76L61 67L50 79',8,SK)}${limb('M92 80L110 67L122 78',8,SK)}${db(47,81)}${db(125,80)}`}${arrow()}`;
+   }
+ }
+ else if(['curl','lateral','shoulder'].includes(kind)){
+   body=`${head(80,31)}<path d="M80 41V91" stroke="${CLO}" stroke-width="20" stroke-linecap="round"/>${limb('M75 90L61 132',10,CLO)}${limb('M85 90L102 132',10,CLO)}`;
+   if(kind==='lateral') body+=end?`${limb('M73 58L35 58',8,SK)}${limb('M87 58L125 58',8,SK)}${db(29,58)}${db(131,58)}${arrow(145,93,54)}`:`${limb('M73 58L56 91',8,SK)}${limb('M87 58L104 91',8,SK)}${db(53,95)}${db(107,95)}${arrow(145,95,58)}`;
+   else if(kind==='shoulder') body+=end?`${limb('M74 56L62 22',8,SK)}${limb('M86 56L98 22',8,SK)}${db(60,18)}${db(100,18)}${arrow(141,67,28)}`:`${limb('M74 57L55 54',8,SK)}${limb('M86 57L105 54',8,SK)}${db(50,54)}${db(110,54)}${arrow(141,67,28)}`;
+   else body+=end?`${limb('M74 57L58 48',8,SK)}${limb('M86 57L102 48',8,SK)}${db(54,45)}${db(106,45)}${arrow(141,95,56)}`:`${limb('M74 57L57 92',8,SK)}${limb('M86 57L103 92',8,SK)}${db(54,97)}${db(106,97)}${arrow(141,95,56)}`;
+ }
+ else if(['squat','lunge','hinge'].includes(kind)){
+   if(kind==='hinge'&&end){body=`${head(103,60)}<path d="M94 68L62 84" stroke="${CLO}" stroke-width="20" stroke-linecap="round"/>${limb('M63 85L53 132',10,CLO)}${limb('M69 85L91 132',10,CLO)}${limb('M78 77L48 109',8,SK)}${limb('M79 78L106 109',8,SK)}${db(44,112)}${db(110,112)}${arrow(138,100,61)}`}
+   else if(kind==='squat'&&end){body=`${head(79,38)}<path d="M79 48L74 87" stroke="${CLO}" stroke-width="20" stroke-linecap="round"/>${limb('M73 88L43 106L61 134',10,CLO)}${limb('M78 88L111 106L91 134',10,CLO)}${limb('M75 60L54 84',8,SK)}${limb('M84 60L104 84',8,SK)}${arrow(140,92,52)}`}
+   else if(kind==='lunge'&&end){body=`${head(79,31)}<path d="M79 41V86" stroke="${CLO}" stroke-width="20" stroke-linecap="round"/>${limb('M75 86L43 111L26 133',10,CLO)}${limb('M84 86L107 97L130 133',10,CLO)}${limb('M74 58L58 91',8,SK)}${limb('M86 58L103 91',8,SK)}${db(54,95)}${db(107,95)}${arrow(143,98,59)}`}
+   else {body=`${head(80,31)}<path d="M80 41V91" stroke="${CLO}" stroke-width="20" stroke-linecap="round"/>${limb('M75 90L60 134',10,CLO)}${limb('M85 90L102 134',10,CLO)}${limb('M74 58L58 91',8,SK)}${limb('M86 58L103 91',8,SK)}${db(54,96)}${db(107,96)}${arrow(143,99,60)}`}
+ }
+ else if(kind==='pushup'||kind==='plank'){
+   const y=end?94:74;
+   body=`${head(39,y-8)}${limb(`M50 ${y}L104 ${y+13}`,18,CLO)}${limb(`M103 ${y+13}L139 ${y+20}`,10,CLO)}${limb(`M61 ${y+3}L45 130`,8,SK)}${limb(`M109 ${y+14}L132 132`,8,SK)}${arrow(145,110,70)}`;
+ }
+ else if(kind==='row'||kind==='machinerow'||kind==='pulldown'){
+   if(kind==='pulldown'){
+     body=`<path d="M29 24H132M80 24V47" stroke="${EQ}" stroke-width="7"/>${head(80,55)}<path d="M80 65V108" stroke="${CLO}" stroke-width="20" stroke-linecap="round"/>${limb('M75 105L60 137',10,CLO)}${limb('M86 105L102 137',10,CLO)}${end?`${limb('M73 74L55 62L47 49',8,SK)}${limb('M87 74L105 62L113 49',8,SK)}`:`${limb('M73 73L50 39',8,SK)}${limb('M87 73L110 39',8,SK)}`}${bone(`M${end?45:48} ${end?47:37}H${end?115:112}`,5,EQ2)}${arrow(143,46,83)}`;
+   }else{
+     body=`<path d="M35 118H125M42 118V80" stroke="${EQ}" stroke-width="7"/>${head(74,48)}<path d="M75 58L86 95" stroke="${CLO}" stroke-width="20" stroke-linecap="round"/>${limb('M84 95L102 126',10,CLO)}${limb('M81 96L63 128',10,CLO)}${end?`${limb('M79 66L106 74',8,SK)}${bone('M108 74H132',5,EQ2)}`:`${limb('M79 66L126 75',8,SK)}${bone('M127 75H145',5,EQ2)}`}${arrow(143,92,62)}`;
+   }
+ }
+ else if(['legpress','legext','legcurl','machinepress','core'].includes(kind)){
+   const machine=`<rect x="20" y="18" width="120" height="120" rx="13" fill="#e9eef1" stroke="${EQ}" stroke-width="5"/><path d="M34 124H128M36 30V126" stroke="${EQ2}" stroke-width="5"/>`;
+   body=machine+`${head(80,48)}<path d="M80 58V96" stroke="${CLO}" stroke-width="20" stroke-linecap="round"/>${limb('M76 94L61 128',10,CLO)}${limb('M85 94L102 128',10,CLO)}`;
+   if(kind==='legpress') body+=end?`${limb('M76 96L48 72',10,CLO)}${limb('M85 96L113 72',10,CLO)}${bone('M43 65L50 54M118 65L111 54',6,EQ2)}`:`${limb('M76 96L56 111',10,CLO)}${limb('M85 96L105 111',10,CLO)}${arrow(145,110,66)}`;
+   else if(kind==='legext') body+=end?`${limb('M77 96L53 94',10,CLO)}${limb('M86 96L111 94',10,CLO)}${arrow(145,113,76)}`:`${limb('M77 96L64 126',10,CLO)}${limb('M86 96L99 126',10,CLO)}${arrow(145,113,76)}`;
+   else if(kind==='legcurl') body+=end?`${limb('M76 96L62 116',10,CLO)}${limb('M85 96L99 116',10,CLO)}${arrow(145,116,79)}`:`${limb('M76 96L58 132',10,CLO)}${limb('M85 96L103 132',10,CLO)}${arrow(145,116,79)}`;
+   else body+=end?`${limb('M74 69L52 54',8,SK)}${limb('M87 69L109 54',8,SK)}${arrow(145,88,48)}`:`${limb('M74 69L56 82',8,SK)}${limb('M87 69L105 82',8,SK)}${arrow(145,88,48)}`;
+ }
+ else {
+   body=`${head(80,31)}<path d="M80 41V91" stroke="${CLO}" stroke-width="20" stroke-linecap="round"/>${limb('M75 90L60 134',10,CLO)}${limb('M85 90L102 134',10,CLO)}${limb('M74 58L58 91',8,SK)}${limb('M86 58L103 91',8,SK)}${arrow()}`;
+ }
+ return `<svg class="dmIllustration" viewBox="0 0 160 150" aria-hidden="true">${base}<g filter="url(#s)">${body}</g></svg>`;
+}
+function exArt(e,phase=0){return personSVG((e&&e.kind)||'press',phase)}
+function v2ExerciseVisual(e,phase){return `<div class="svgWrap">${exArt(e,phase)}</div>`}
+</script>
+
+</body></html>
